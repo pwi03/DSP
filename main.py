@@ -2,7 +2,7 @@ import simpleaudio as sa # pipwin install simpleaudio
 import speech_recognition as sr   # pip install SpeechRecognition
 # pip install pipwin ----> pipwin install PyAudio
 
-import RPi.GPIO
+import RPi.GPIO as GPIO
 
 r = sr.Recognizer() #initialize recognizer
 #initialize audios
