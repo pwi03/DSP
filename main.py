@@ -2,6 +2,8 @@ import simpleaudio as sa # pipwin install simpleaudio
 import speech_recognition as sr   # pip install SpeechRecognition
 # pip install pipwin ----> pipwin install PyAudio
 
+import RPi.GPIO
+
 r = sr.Recognizer() #initialize recognizer
 #initialize audios
 ansprechbar = "audios\\ansprechbar.wav"
@@ -66,35 +68,42 @@ def getAnswer():
                 checkStop(MyText)
             except Exception as e:
                 print(e)
-    
-#EINLEITUNGSAUDIO
-playAudio(einleitung)
-##########
-#IST EINE LEHRKRAFT ANWESEND?
-##########
-playAudio(lehrkraft)
 
-if getAnswer() == "nein":
-    playAudio(sekretariat)
+                
+# START
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(15, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
-playAudio(strom_feuer)
+def startDSP():
 
-if getAnswer() == "ja":
-    playAudio(notaus)
+    #EINLEITUNGSAUDIO
+    playAudio(einleitung)
+    ##########
+    #IST EINE LEHRKRAFT ANWESEND?
+    ##########
+    playAudio(lehrkraft)
 
-playAudio(ansprechbar)
+    if getAnswer() == "nein":
+        playAudio(sekretariat)
 
-if getAnswer() == "ja":
-    playAudio(beruhigen)
-    playAudio(blut)
+    playAudio(strom_feuer)
+
     if getAnswer() == "ja":
-        playAudio(blutung_abdruecken)
-    playAudio(lehrkraft_warten)
-elif getAnswer() == "nein":
-    playAudio(atmen)
+        playAudio(notaus)
+
+    playAudio(ansprechbar)
+
     if getAnswer() == "ja":
-        playAudio(stabile_seitenlage)
+        playAudio(beruhigen)
+        playAudio(blut)
+        if getAnswer() == "ja":
+            playAudio(blutung_abdruecken)
+        playAudio(lehrkraft_warten)
     elif getAnswer() == "nein":
-        while 1 == 1:
-            playAudio(lehrkraft_warten)
-            playAudio(lied_hlw)
+        playAudio(atmen)
+        if getAnswer() == "ja":
+            playAudio(stabile_seitenlage)
+        elif getAnswer() == "nein":
+            while 1 == 1:
+                playAudio(lehrkraft_warten)
+                playAudio(lied_hlw)
