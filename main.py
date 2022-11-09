@@ -1,3 +1,4 @@
+import fcm
 import simpleaudio as sa # pipwin install simpleaudio
 import speech_recognition as sr   # pip install SpeechRecognition
 # pip install pipwin ----> pipwin install PyAudio
@@ -85,6 +86,7 @@ def startDSP():
 
     if getAnswer() == "nein":
         playAudio(sekretariat)
+        fcm.sendAlert("000")
 
     playAudio(strom_feuer)
 
